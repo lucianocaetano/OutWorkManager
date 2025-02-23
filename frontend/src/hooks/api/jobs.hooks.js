@@ -145,6 +145,7 @@ export const useUpdateEnterpriseJob = async (enterprise, pk, data) => {
     })
     .catch((err) => {
       if (err?.response?.status === 422) {
+        console.log(err)
         const messages = err.response.data.errors;
         isError.value = true;
         error.value = messages;
@@ -203,6 +204,7 @@ export const useCreateEnterpriseJob = async (enterprise, data) => {
       }
     })
     .catch((err) => {
+      console.log(err)
       if (err?.response?.status === 422) {
         const messages = err.response.data.errors;
         isError.value = true;

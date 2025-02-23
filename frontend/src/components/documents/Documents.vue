@@ -16,14 +16,14 @@
     <h4 class="text-h4 q-my-none">Documentos :</h4>
     <add-document :entity="entity" :params="params" @refetch="refetch" />
   </div>
-  <div style="width: 100%; height: 100vh" v-if="!isLoading">
+  <div style="width: 100%" v-if="!isLoading">
     <q-markup-table flat bordered>
       <thead class="bg-teal text-white">
         <tr>
           <th class="text-left">Título</th>
           <th class="text-left">Vencimiento</th>
-          <th class="text-left">Autorización</th>
-          <th class="text-center">Acciones</th>
+          <th class="text-right">Autorización</th>
+          <th class="text-right">Acciones</th>
         </tr>
       </thead>
       <tbody

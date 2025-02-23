@@ -15,12 +15,12 @@
     <td class="text-left">
       {{ document.expire }}
     </td>
-    <td class="text-left">
+    <td class="text-right">
       <p :class="document.is_valid ? 'text-green' : 'text-red'">
         {{ document.is_valid ? "Autorizado" : "No Autorizado" }}
       </p>
     </td>
-    <td class="text-center">
+    <td class="text-right">
       <EditDocument
         :entity="entity"
         :params="{

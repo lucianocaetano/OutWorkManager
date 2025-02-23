@@ -28,33 +28,16 @@ class JobEnterpriseController extends Controller
 
         $query = $enterprise->jobs()->getQuery();
 
-        $valid = $request->input('valid');
+        $now = Carbon::now();
 
-        if ($valid === 'true') {
-            $now = Carbon::now();
-
-            $query->where(function ($q) use ($now) {
-                $q->where(DB::raw("CONCAT(date, ' ', in_time)"), '>', $now->toDateTimeString());
-            });
-        } else if ($valid === 'false') {
-            $now = Carbon::now();
-
-            $query->where(function ($q) use ($now) {
-                $q->whereDate('date', '<', $now->toDateString())
-                    ->orWhere(function ($q2) use ($now) {
-                        $q2->whereDate('date', '=', $now->toDateString())
-                            ->whereTime('in_time', '<', $now->toTimeString());
-                    });
-            });
-        }
-
+        $query->where(function ($q) use ($now) {
+            $q->where(DB::raw("in_datetime"), '>', $now->toDateTimeString());
+        });
+        
         $confirm = $request->input('confirm');
 
-        if ($confirm === 'true') {
-            $query->where('is_check', true);
-        } else if ($confirm === 'false') {
-            $query->where('is_check', false);
-        }
+        if ($confirm === 'true') $query->where('is_check', true);
+        else if ($confirm === 'false') $query->where('is_check', false);
 
         $search = $request->input('search', null);
 
@@ -84,7 +67,7 @@ class JobEnterpriseController extends Controller
         $data =  $request->validated();
 
         $job = $enterprise->jobs()->create($data);
-        
+
         $notification = Notification::create([
             'content' => 'La Empresa ' . $enterprise->nombre . ' programo un nuevo trabajo',
             'enterprise_id' => $enterprise->id,

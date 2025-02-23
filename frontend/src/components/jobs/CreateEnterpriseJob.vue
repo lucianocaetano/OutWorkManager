@@ -30,10 +30,16 @@
             label="Confirmarcion"
           />
 
-          <q-input v-model="data.date" type="date" label="Fecha" required />
+          <p class="q-mt-md">Horarios:</p>
+          <q-input
+            v-model="data.in_datetime"
+            required
+            type="datetime-local"
+            label="Entrada"
+          />
 
           <div
-            v-for="(error, index) in error_create?.date"
+            v-for="(error, index) in error_create?.in_datetime"
             :key="index"
             class="q-mt-sm"
           >
@@ -42,44 +48,22 @@
             </span>
           </div>
 
-          <p class="q-mt-md">Horarios:</p>
-          <div class="flex gap-md">
-            <q-input
-              v-model="data.in_time"
-              required
-              type="time"
-              class="q-mr-xl"
-              label="Entrada"
-            />
+          <q-input
+            v-model="data.out_datetime"
+            type="datetime-local"
+            label="Salida"
+            required
+          />
 
-            <div
-              v-for="(error, index) in error_create?.in_time"
-              :key="index"
-              class="q-mt-sm"
-            >
-              <span class="q-pa-xs bg-negative text-white">
-                {{ error }}
-              </span>
-            </div>
-
-            <q-input
-              v-model="data.out_time"
-              type="time"
-              label="Salida"
-              required
-            />
-
-            <div
-              v-for="(error, index) in error_create?.out_time"
-              :key="index"
-              class="q-mt-sm"
-            >
-              <span class="q-pa-xs bg-negative text-white">
-                {{ error }}
-              </span>
-            </div>
+          <div
+            v-for="(error, index) in error_create?.out_datetime"
+            :key="index"
+            class="q-mt-sm"
+          >
+            <span class="q-pa-xs bg-negative text-white">
+              {{ error }}
+            </span>
           </div>
-
           <q-btn
             label="Registrar Trabajo"
             class="q-mt-md"
@@ -112,39 +96,39 @@ import { useUserStore } from "src/store/user.store";
 
 export default {
   setup(props, { emit }) {
-    const userStore = useUserStore()
+    const userStore = useUserStore();
 
     const show = ref(false);
     const users = ref(null);
 
-    const user = userStore.getUser
+    const user = userStore.getUser;
 
     const data = reactive({
       description: null,
       is_check_enterprise: true,
-      date: null,
-      in_time: null,
-      out_time: null,
+      in_datetime: null,
+      out_datetime: null,
     });
 
     const error_create = ref(null);
 
     const handleClose = () => {
-      data.description = null,
-      data.is_check_enterprise = true,
-      data.date = null,
-      data.in_time = null,
-      data.out_time = null,
-        
+      data.description = null;
+      data.is_check_enterprise = true;
+      data.in_datetime = null;
+      data.out_datetime = null;
       show.value = false;
 
       emit("refetch");
     };
 
     const handleCreate = async () => {
-      const { isError, error } = await useCreateEnterpriseJob(user.enterprise.slug, {
-        ...data,
-      });
+      const { isError, error } = await useCreateEnterpriseJob(
+        user.enterprise.slug,
+        {
+          ...data,
+        }
+      );
 
       if (!isError.value) {
         handleClose();

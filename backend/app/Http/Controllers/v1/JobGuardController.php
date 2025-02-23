@@ -18,17 +18,22 @@ class JobGuardController  extends Controller
     public function index(Request $request)
     {
         Gate::authorize('viewGuard', Job::class);
-        
+
         $query = Job::query();
+
+        $query->where([
+            ['is_check', true],
+            ['is_check_enterprise', true]
+        ]);
 
         $now = Carbon::now();
 
         $query->where(function ($q) use ($now) {
             $q->where(DB::raw("in_datetime"), '>', $now->toDateTimeString());
         });
-        
+
         $query->where('is_check', true);
-        
+
         $search = $request->input('search', null);
 
         if ($search !== null) {

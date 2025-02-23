@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 class JobEnterpriseStoreRequest extends FormRequest
@@ -24,8 +25,24 @@ class JobEnterpriseStoreRequest extends FormRequest
         return [
             "description" => ["required", "string"],
             "is_check_enterprise" => ["boolean"],
-            "date" => ["required", "date", 'date_format:Y-m-d', 'after_or_equal:' . now()->toDateString()],
-            "in_time" => ["required", 'date_format:H:i'],
-            "out_time" => ["required", 'date_format:H:i'],
+            "in_datetime" => ["required", "date_format:Y-m-d H:i"],
+            "out_datetime" => ["required", "date_format:Y-m-d H:i"],
         ];
-    }}
+    }
+
+    public function prepareForValidation()
+    {
+        if ($this->has('in_datetime')) {
+            $this->merge([
+                'in_datetime' => Carbon::parse($this->input('in_datetime'))->format('Y-m-d H:i'),
+            ]);
+        }
+
+        if ($this->has('out_datetime')) {
+            $this->merge([
+                'out_datetime' => Carbon::parse($this->input('out_datetime'))->format('Y-m-d H:i'),
+            ]);
+        }
+
+    }
+}

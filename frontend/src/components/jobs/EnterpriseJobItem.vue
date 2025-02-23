@@ -2,10 +2,17 @@
   <tr>
     <td class="text-left">{{ job.enterprise }}</td>
     <td class="text-left">{{ job.description.slice(0, 40) }}...</td>
-    <td class="text-right">{{ job.date }}</td>
-    <td class="text-right">{{ job.in_time }}</td>
-    <td class="text-right">{{ job.out_time }}</td>
-    <td class="text-center">
+    <td class="text-right">{{ job.in_datetime }}</td>
+    <td class="text-right">
+      {{ job.in_datetime_confirm ? job.in_datetime_confirm : "no confirmado" }}
+    </td>
+    <td class="text-right">{{ job.out_datetime }}</td>
+    <td class="text-right">
+      {{
+        job.out_datetime_confirm ? job.out_datetime_confirm : "no confirmado"
+      }}
+    </td>
+    <td class="text-right">
       <q-avatar
         v-if="job.is_check"
         icon="mdi-check"
@@ -13,7 +20,6 @@
       />
       <q-avatar v-else icon="mdi-close" class="bg-red text-h4 text-white" />
     </td>
-
     <td class="text-center">
       <q-checkbox v-model="check" @click="handleToggleCheck" />
     </td>
@@ -39,10 +45,10 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const userStore = useUserStore()
+    const userStore = useUserStore();
     const router = useRouter();
 
-    const user = userStore.getUser
+    const user = userStore.getUser;
 
     const check = ref(props.job.is_check_enterprise);
 

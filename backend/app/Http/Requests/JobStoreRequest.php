@@ -33,11 +33,17 @@ class JobStoreRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        if ($this->has('in_datetime') || $this->has('out_datetime')) {
+        if ($this->has('in_datetime')) {
             $this->merge([
                 'in_datetime' => Carbon::parse($this->input('in_datetime'))->format('Y-m-d H:i'),
+            ]);
+        }
+
+        if($this->has('out_datetime')) {
+            $this->merge([
                 'out_datetime' => Carbon::parse($this->input('out_datetime'))->format('Y-m-d H:i'),
             ]);
         }
+
     }
 }

@@ -15,7 +15,7 @@
       </q-input>
     </div>
     <div class="q-my-lg w-full flex justify-center items-center">
-      <CreateJob @refetch="() => refetch({valid: true})" />
+      <CreateJob @refetch="() => refetch({ valid: true })" />
 
       <q-btn-dropdown
         color="#000000"
@@ -55,9 +55,10 @@
         <tr>
           <th class="text-left">Empresa</th>
           <th class="text-left">Trabajo</th>
-          <th class="text-right">Fecha</th>
-          <th class="text-right">Hora salida</th>
           <th class="text-right">Hora entrada</th>
+          <th class="text-right">Hora entrada confirmada</th>
+          <th class="text-right">Hora salida</th>
+          <th class="text-right">Hora salida confirmada</th>
           <th class="text-right">Confirmación</th>
           <th class="text-right">Confirmación de la empresa</th>
           <th class="text-right">+Más Información</th>
@@ -92,7 +93,8 @@ export default {
     const user = userStore.getUser;
 
     const { isLoading, jobs, refetch, paginate } = useEnterpriseJobs(
-      user.enterprise.slug, {valid: true}
+      user.enterprise.slug,
+      { valid: true }
     );
 
     const filter = ref(null);
@@ -108,7 +110,7 @@ export default {
     });
 
     const handleRefetchPage = (p) => {
-      page.value = p
+      page.value = p;
       refetch({
         filter: filter.value,
         search: search.value,
@@ -124,7 +126,7 @@ export default {
         valid: true,
       })
     );
-    
+
     return {
       isLoading,
       jobs,

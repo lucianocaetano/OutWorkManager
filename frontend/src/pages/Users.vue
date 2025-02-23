@@ -102,7 +102,6 @@ export default {
     const role = ref(null);
 
     watch([role, search], () => {
-      console.log(role.value);
       refetch({
         role: role.value,
         search: search.value,

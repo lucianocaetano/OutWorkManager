@@ -22,22 +22,47 @@
           <tr>
             <th class="text-center">Authorizado</th>
             <th class="text-center">Authorizacion de la empresa</th>
-            <th class="text-right">Fecha</th>
-            <th class="text-right">Hora Entrada</th>
-            <th class="text-right">Hora Salida</th>
+            <th class="text-left">Empresa</th>
+            <th class="text-right">Hora entrada</th>
+            <th class="text-right">Hora entrada confirmada</th>
+            <th class="text-right">Hora salida</th>
+            <th class="text-right">Hora salida confirmada</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="text-center">{{ job.is_check }}</td>
-            <td class="text-center">{{ job.is_check_enterprise }}</td>
-            <td class="text-right">{{ job.date }}</td>
-            <td class="text-right">{{ job.in_time }}</td>
-            <td class="text-right">{{ job.out_time }}</td>
+            <td class="text-center">
+              <p :class="job.is_check ? 'text-green' : 'text-red'">
+                {{ job.is_check ? "Autorizado" : "No Autorizado" }}
+              </p>
+            </td>
+            <td class="text-center">
+              <p :class="job.is_check_enterprise ? 'text-green' : 'text-red'">
+                {{ job.is_check_enterprise ? "Autorizado" : "No Autorizado" }}
+              </p>
+            </td>
+            <td class="text-right">{{ job.enterprise }}</td>
+            <td class="text-right">{{ job.in_datetime }}</td>
+            <td class="text-right">
+              {{
+                job.in_datetime_confirm
+                  ? job.in_datetime_confirm
+                  : "no confirmado"
+              }}
+            </td>
+            <td class="text-right">{{ job.out_datetime }}</td>
+            <td class="text-right">
+              {{
+                job.out_datetime_confirm
+                  ? job.out_datetime_confirm
+                  : "no confirmado"
+              }}
+            </td>
           </tr>
         </tbody>
       </q-markup-table>
     </q-card>
+
     <h5>Descripción del trabajo:</h5>
     <p style="width: 100%; max-width: 500px" class="q-mt-sm">
       {{ job.description }}
@@ -74,6 +99,7 @@ import ValidDeleteOperatorMenu from "src/components/helpers/ValidDeleteMenu.vue"
 import { ref } from "vue";
 import { useUserStore } from "src/store/user.store";
 import EditJob from "src/components/jobs/EditEnterpriseJob.vue";
+import { useAutoRefetch } from "src/hooks/api/autorefetchs.hooks";
 
 export default {
   components: {
@@ -88,7 +114,10 @@ export default {
     const userStore = useUserStore();
     const user = userStore.getUser;
 
-    const { job, isLoading, refetch } = useEnterpriseJob(user.enterprise.slug, params.pk);
+    const { job, isLoading, refetch } = useEnterpriseJob(
+      user.enterprise.slug,
+      params.pk
+    );
 
     const handleOutClick = () => router.go(-1);
 
@@ -106,8 +135,8 @@ export default {
       handleOutClick();
     };
 
-    useAutoRefetch(()=>refetch())
-    
+    useAutoRefetch(() => refetch());
+
     return {
       isLoading,
       job,

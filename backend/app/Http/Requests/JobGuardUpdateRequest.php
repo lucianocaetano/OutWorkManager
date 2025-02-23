@@ -23,18 +23,23 @@ class JobGuardUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "in_datetime_confirm" => ["date_format:Y-m-d H:i"],
-            "out_datetime_confirm" => ["date_format:Y-m-d H:i"]
+            "in_datetime_confirm" => ["nullable", "date_format:Y-m-d H:i"],
+            "out_datetime_confirm" => ["nullable", "date_format:Y-m-d H:i"]
         ];
     }
 
- 
+
     public function prepareForValidation()
     {
-        if ($this->has('in_datetime_confirm') || $this->has('out_datetime_confirm')) {
+        if ($this->has('in_datetime')) {
             $this->merge([
-                'in_datetime_confirm' => Carbon::parse($this->input('in_datetime_confirm'))->format('Y-m-d H:i'),
-                'out_datetime_confirm' => Carbon::parse($this->input('out_datetime_confirm'))->format('Y-m-d H:i'),
+                'in_datetime' => Carbon::parse($this->input('in_datetime'))->format('Y-m-d H:i'),
+            ]);
+        }
+
+        if ($this->has('out_datetime')) {
+            $this->merge([
+                'out_datetime' => Carbon::parse($this->input('out_datetime'))->format('Y-m-d H:i'),
             ]);
         }
     }

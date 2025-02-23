@@ -26,28 +26,16 @@
 
           <q-checkbox v-model="job.is_check" label="Confirmarcion" />
 
-          <q-input v-model="job.date" type="date" label="Fecha" required />
-
-          <div
-            v-for="(error, index) in error_edit?.date"
-            :key="index"
-            class="q-mt-sm"
-          >
-            <span class="q-pa-xs bg-negative text-white">
-              {{ error }}
-            </span>
-          </div>
-
           <p class="q-mt-md">Horarios:</p>
           <q-input
-            v-model="job.in_datetime"
+            v-model="data.in_datetime"
             required
             type="datetime-local"
             label="Entrada"
           />
 
           <div
-            v-for="(error, index) in error_edit?.in_datetime"
+            v-for="(error, index) in error_create?.in_datetime"
             :key="index"
             class="q-mt-sm"
           >
@@ -57,23 +45,21 @@
           </div>
 
           <q-input
-            v-model="job.out_datetime"
+            v-model="data.out_datetime"
             type="datetime-local"
             label="Salida"
             required
           />
 
           <div
-            v-for="(error, index) in error_edit?.out_datetime"
+            v-for="(error, index) in error_create?.out_datetime"
             :key="index"
             class="q-mt-sm"
           >
             <span class="q-pa-xs bg-negative text-white">
               {{ error }}
             </span>
-          </div>
-
-          <q-btn
+          </div>          <q-btn
             label="Editar Trabajo"
             class="q-mt-md"
             type="submit"
